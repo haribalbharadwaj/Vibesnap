@@ -1,0 +1,68 @@
+/* General styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  background: #FFFFFF
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Take full viewport height */
+  padding: 20px;
+  text-align: center;
+  margin: 0 auto; 
+}
+
+/* Responsive image */
+.responsive-image {
+  width: 100%;
+  max-width: 400px; /* Max size for larger screens */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 20px; /* Space between image and button */
+}
+
+.rectangle {
+  width: 360px;
+  height: 360px;
+  background-color: #FFFFFF; /* Light gray background for the rectangle */
+  border-radius: 63px 63px 0 0; /* Rounded corners */
+  display: flex;
+  flex-direction: column;
+  gap:20px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top:-115px;
+  margin: 0 auto;
+}
+
+/* Google image inside rectangle */
+.google-image {
+  width: 80px; /* Set a suitable width for the Google image */
+  cursor: pointer;
+}
+
+/* Media queries for small devices */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .responsive-image {
+    max-width: 300px;
+  }
+
+  .rectangle {
+    width: 300px;
+    height: 300px;
+  }
+
+  .google-image {
+    width: 60px; /* Smaller Google image for small devices */
+  }
+}

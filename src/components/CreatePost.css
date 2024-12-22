@@ -1,0 +1,107 @@
+.create-post-container {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.post-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.file-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.desktop-file-chooser {
+  display: none;
+}
+
+.desktop-camera {
+  display: none;
+}
+
+.mobile-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.mobile-buttons button {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.selected-files {
+  margin-top: 20px;
+}
+
+.file-preview {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.create-post-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Desktop View */
+@media (min-width: 768px) {
+  .desktop-file-chooser {
+    display: block;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .desktop-camera {
+    display: block;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .mobile-buttons {
+    display: none;
+  }
+}
+
+/* Media preview */
+.file-preview img, .file-preview video {
+  max-width: 100%; /* Ensure the media is responsive */
+  height: auto;    /* Maintain the aspect ratio */
+  object-fit: cover; /* Cover the container and crop if necessary */
+  border-radius: 5px;
+  max-height: 300px; /* Set a max height to prevent very large previews */
+}
+
+.file-preview video {
+  max-width: 100%;  /* Ensure video doesn't overflow */
+  height: auto;     /* Maintain aspect ratio */
+}

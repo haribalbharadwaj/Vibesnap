@@ -1,0 +1,137 @@
+/* General styling for profile page */
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  /* Profile Image Section */
+  .profile-image-section {
+    margin-top: 20px;
+  }
+  
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #7EA6FF;
+  }
+  
+  /* Profile Details Section */
+  .profile-details {
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  .profile-details h2 {
+    font-size: 1.5rem;
+    margin: 10px 0;
+  }
+  
+  .profile-details p {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+  }
+  
+  /* Edit Profile Button */
+  .edit-profile-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #7EA6FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-profile-button:hover {
+    background-color: #6591e8;
+  }
+  
+  /* My Posts Section */
+  .my-posts-section {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 30px;
+  }
+  
+  .my-posts-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .post {
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .profile-page {
+      padding: 10px;
+    }
+  
+    .profile-image {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .profile-details h2 {
+      font-size: 1.3rem;
+    }
+  
+    .profile-details p {
+      font-size: 0.9rem;
+    }
+  
+    .edit-profile-button {
+      padding: 8px 15px;
+      font-size: 0.9rem;
+    }
+  
+    .my-posts-section {
+      margin-top: 20px;
+    }
+  }
+  
+  /* Extra small devices (phones, less than 600px) */
+  @media (max-width: 600px) {
+    .profile-image {
+      width: 80px;
+      height: 80px;
+    }
+  
+    .profile-details h2 {
+      font-size: 1.1rem;
+    }
+  
+    .profile-details p {
+      font-size: 0.8rem;
+    }
+  
+    .edit-profile-button {
+      padding: 7px 12px;
+      font-size: 0.8rem;
+    }
+  
+    .my-posts-section {
+      margin-top: 15px;
+    }
+  
+    .post {
+      font-size: 0.9rem;
+    }
+  }
+  
