@@ -1,137 +1,195 @@
 /* General styling for profile page */
 .profile-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Profile Image Section */
+.profile-image-section {
+  margin-top: 20px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #7EA6FF;
+}
+
+/* Profile Details Section */
+.profile-details {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.profile-details h2 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.profile-details p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Edit Profile Button */
+.edit-profile-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #7EA6FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.edit-profile-button:hover {
+  background-color: #6591e8;
+}
+
+/* My Posts Section */
+.my-posts-section {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 30px;
+}
+
+.my-posts-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Flex container for post images */
+/* Flex container for post images */
+.post-images {
+  display: flex;
+  flex-wrap: wrap; /* Allow posts to wrap to the next line */
+  gap: 16px; /* Adjust gap between images */
+  justify-content: flex-start; /* Align images to the start of the row */
+  width: 100%; /* Align posts side by side (this is actually default for flex) */
+}
+
+/* Individual post image styling */
+.post-image {
+  width: 48%; /* Adjust this to control how many posts per row */
+  height: auto; /* Adjust height to maintain aspect ratio */
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .profile-page {
+    width: calc(100% - 8px);
   }
-  
-  /* Profile Image Section */
-  .profile-image-section {
-    margin-top: 20px;
-  }
-  
+
   .profile-image {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #7EA6FF;
+    width: 100px;
+    height: 100px;
   }
-  
-  /* Profile Details Section */
-  .profile-details {
-    margin-top: 15px;
-    text-align: center;
-  }
-  
+
   .profile-details h2 {
-    font-size: 1.5rem;
-    margin: 10px 0;
+    font-size: 1.3rem;
   }
-  
+
   .profile-details p {
-    font-size: 1rem;
-    color: #666;
-    margin: 0;
+    font-size: 0.9rem;
   }
-  
-  /* Edit Profile Button */
+
   .edit-profile-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #7EA6FF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    padding: 8px 15px;
+    font-size: 0.9rem;
   }
-  
-  .edit-profile-button:hover {
-    background-color: #6591e8;
-  }
-  
-  /* My Posts Section */
+
   .my-posts-section {
-    width: 100%;
-    max-width: 600px;
-    margin-top: 30px;
+    margin-top: 20px;
   }
-  
-  .my-posts-section h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #333;
+
+  .post-images {
+    justify-content: flex-start; /* Align images to the start of the row */
   }
-  
-  .post {
-    padding: 10px;
-    background-color: white;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  .post-image {
+    width: 48%; /* Keep two posts per row */
+    height: auto;
   }
-  
-  /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .profile-page {
-      padding: 10px;
-    }
-  
-    .profile-image {
-      width: 100px;
-      height: 100px;
-    }
-  
-    .profile-details h2 {
-      font-size: 1.3rem;
-    }
-  
-    .profile-details p {
-      font-size: 0.9rem;
-    }
-  
-    .edit-profile-button {
-      padding: 8px 15px;
-      font-size: 0.9rem;
-    }
-  
-    .my-posts-section {
-      margin-top: 20px;
-    }
+}
+
+/* Extra small devices (phones, less than 600px) */
+@media (max-width: 600px) {
+  .profile-image {
+    width: 80px;
+    height: 80px;
   }
-  
-  /* Extra small devices (phones, less than 600px) */
-  @media (max-width: 600px) {
-    .profile-image {
-      width: 80px;
-      height: 80px;
-    }
-  
-    .profile-details h2 {
-      font-size: 1.1rem;
-    }
-  
-    .profile-details p {
-      font-size: 0.8rem;
-    }
-  
-    .edit-profile-button {
-      padding: 7px 12px;
-      font-size: 0.8rem;
-    }
-  
-    .my-posts-section {
-      margin-top: 15px;
-    }
-  
-    .post {
-      font-size: 0.9rem;
-    }
+
+  .profile-details h2 {
+    font-size: 1.1rem;
   }
-  
+
+  .profile-details p {
+    font-size: 0.8rem;
+  }
+
+  .edit-profile-button {
+    padding: 7px 12px;
+    font-size: 0.8rem;
+  }
+
+  .my-posts-section {
+    margin-top: 15px;
+  }
+
+  .post-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Adjust gap between images */
+    justify-content: flex-start; /* Ensure images are spaced side by side */
+  }
+
+  .post-image {
+    width: 48%; /* Ensure 2 posts side by side */
+    height: auto; /* Adjust height */
+  }
+}
+
+
+/* Post image container with text overlay */
+.post-image-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+/* Individual post image styling */
+.post-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Text overlay */
+.text-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 5px;
+  border-radius: 5px;
+}

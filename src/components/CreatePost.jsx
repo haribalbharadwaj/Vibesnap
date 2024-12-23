@@ -31,6 +31,7 @@ const CreatePost = () => {
       const fileRef = ref(storage, `posts/${file.name}`);
       await uploadBytes(fileRef, file); // Upload file to storage
       const fileUrl = await getDownloadURL(fileRef); // Get download URL of the file
+      console.log(fileUrl);
       fileUrls.push(fileUrl); // Add URL to the list
     }
 
@@ -40,6 +41,11 @@ const CreatePost = () => {
   // Handle post submission
   const handleSubmitPost = async () => {
     const user = auth.currentUser;  // Get the current authenticated user
+    if (!user) {
+      console.error('User is not authenticated.');
+      return;
+    }
+    
     if (user) {
       try {
         // Upload files and get their URLs

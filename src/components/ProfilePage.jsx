@@ -1,37 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import {doc, getDoc } from 'firebase/firestore'; // Firestore functions
-import { auth, provider } from "../../firebaseConfig.js";
-import DefaultProfile from '../assets/default.png'; // Default profile image
-import '../components/ProfilePage.css'; // Import CSS for the page
+import { auth } from "../../firebaseConfig.js";
+import DefaultProfile from '../assets/default.png'; 
+import '../components/ProfilePage.css'; 
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 const ProfilePage = () => {
+  const storage = getStorage();
   const [userData, setUserData] = useState({
-    name: 'New User', // Default name for new users
-    bio: 'This is your bio', // Default bio for new users
-    photoURL: DefaultProfile, // Default profile image
+    name: 'New User',
+    bio: 'This is your bio',
+    photoURL: DefaultProfile,
   });
-  const [posts, setPosts] = useState([]); 
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const db = getFirestore();
 
-  // Fetch the user's profile data from Firebase
   const fetchUserData = async () => {
     try {
-      const user = auth.currentUser;  // Get the current authenticated user
+      const user = auth.currentUser;
       if (user) {
         const docRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
           setUserData({
-            name: data.name || 'New User', // Use stored name or default
-            bio: data.bio || 'This is your bio', // Use stored bio or default
-            photoURL: data.photoURL || DefaultProfile, // Use stored photoURL or default image
+            name: data.name || 'New User',
+            bio: data.bio || 'This is your bio',
+            photoURL: data.photoURL || DefaultProfile,
           });
-        } else {
-          console.log('No such document!');
         }
       }
     } catch (error) {
@@ -39,15 +37,35 @@ const ProfilePage = () => {
     }
   };
 
-   // Fetch posts created by the user
-   const fetchUserPosts = async () => {
+  const fetchPosts = async () => {
     try {
       const user = auth.currentUser;
       if (user) {
-        const q = query(collection(db, 'posts'), where('userId', '==', user.uid));
-        const querySnapshot = await getDocs(q);
-        const fetchedPosts = querySnapshot.docs.map(doc => doc.data());
-        setPosts(fetchedPosts);
+        const postsQuery = query(
+          collection(db, 'posts'),
+          where('userId', '==', user.uid)
+        );
+        const querySnapshot = await getDocs(postsQuery);
+
+        const postData = await Promise.all(
+          querySnapshot.docs.map(async (doc) => {
+            const post = doc.data();
+            const files = post.files || [];
+            const postFiles = await Promise.all(
+              files.map(async (filePath) => {
+                const url = await getDownloadURL(ref(storage, filePath));
+                return url;
+              })
+            );
+
+            return {
+              ...post,
+              postFiles,
+            };
+          })
+        );
+        
+        setPosts(postData);
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -55,19 +73,43 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    fetchUserData(); // Fetch user data when the component loads
-    fetchUserPosts();
+    fetchUserData();
+    fetchPosts();
   }, []);
 
   const handleEditProfile = () => {
-    navigate('/edit-profile'); // Navigate to edit profile page
+    navigate('/edit-profile');
+  };
+
+  const stripQueryParameters = (url) => {
+    return url.split('?')[0];
+  };
+
+  const isImage = (url) => {
+    const cleanUrl = stripQueryParameters(url);
+    return cleanUrl.toLowerCase().endsWith('.jpg') || 
+           cleanUrl.toLowerCase().endsWith('.png') ||
+           cleanUrl.toLowerCase().endsWith('.jpeg') || 
+           cleanUrl.toLowerCase().endsWith('.gif');
+  };
+
+  const isVideo = (url) => {
+    const cleanUrl = stripQueryParameters(url);
+    return cleanUrl.toLowerCase().endsWith('.mp4') || 
+           cleanUrl.toLowerCase().endsWith('.mov') ||
+           cleanUrl.toLowerCase().endsWith('.avi');
+  };
+
+  const getFileExtension = (url) => {
+    const cleanUrl = stripQueryParameters(url);
+    const parts = cleanUrl.split('.');
+    return parts[parts.length - 1].toLowerCase();
   };
 
   return (
     <div className="profile-page">
       <h1>Profile Page</h1>
 
-      {/* Profile Image */}
       <div className="profile-image-section">
         <img
           src={userData.photoURL}
@@ -76,50 +118,44 @@ const ProfilePage = () => {
         />
       </div>
 
-      {/* Profile Details */}
       <div className="profile-details">
-        <h2>{userData.name}</h2> {/* Display user's name */}
-        <p>{userData.bio}</p>   {/* Display user's bio */}
+        <h2>{userData.name}</h2>
+        <p>{userData.bio}</p>
       </div>
 
-      {/* Edit Profile Button */}
       <button className="edit-profile-button" onClick={handleEditProfile}>
         Edit Profile
       </button>
 
-      {/* My Posts Section */}
       <div className="my-posts-section">
         <h2>My Posts</h2>
-
-        {posts.length > 0 ? (
-          posts.map((post, index) => (
-            <div key={index} className="post">
-              {post.text && <p>{post.text}</p>}
-              {post.files && post.files.length > 0 && (
-                <div className="media-files">
-                  {post.files.map((file, i) => (
-                    <div key={i}>
-                      {file.type.startsWith('image/') ? (
-                        <img src={URL.createObjectURL(file)} alt="Post Image" className="post-image" />
-                      ) : (
-                        <video controls className="post-video">
-                          <source src={URL.createObjectURL(file)} />
-                        </video>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>No posts yet.</p>
-        )}
-        {/* Show posts created by the user */}
-        <div className="post">
-          <p>This is one of the posts created by the user.</p>
+        <div className="post-images">
+          {posts.length > 0 ? (
+            posts.map((post, index) => (
+              <div key={index} className="post">
+                {post.text && <p>{post.text}</p>}
+                {post.postFiles.length > 0 && (
+                  <div className="post-image-container">
+                    {/* Display only the first image/video */}
+                    {isImage(post.postFiles[0]) ? (
+                      <img src={post.postFiles[0]} alt={`Post Image`} className="post-image" />
+                    ) : isVideo(post.postFiles[0]) ? (
+                      <video controls className="post-video">
+                        <source src={post.postFiles[0]} />
+                      </video>
+                    ) : (
+                      <p>Unsupported file format: {getFileExtension(post.postFiles[0])}</p>
+                    )}
+                    {/* Text overlay */}
+                    <div className="text-overlay">{post.text}</div>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <p>No posts yet.</p>
+          )}
         </div>
-        {/* Additional posts can go here */}
       </div>
     </div>
   );
