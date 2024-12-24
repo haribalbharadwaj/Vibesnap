@@ -5,6 +5,7 @@ import { auth } from "../../firebaseConfig.js";
 import DefaultProfile from '../assets/default.png'; 
 import '../components/ProfilePage.css'; 
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import Plus from'../assets/plus.png';
 
 const ProfilePage = () => {
   const storage = getStorage();
@@ -106,6 +107,10 @@ const ProfilePage = () => {
     return parts[parts.length - 1].toLowerCase();
   };
 
+  const handleCreatePostClick = () => {
+    navigate('/createpost'); // Navigate to the CreatePost page
+  };
+
   return (
     <div className="profile-page">
       <h1>Profile Page</h1>
@@ -157,6 +162,10 @@ const ProfilePage = () => {
           )}
         </div>
       </div>
+
+      <div className="circular-model">
+              <img src={Plus} alt="Icon inside circular model"  onClick={handleCreatePostClick}/>
+            </div>
     </div>
   );
 };

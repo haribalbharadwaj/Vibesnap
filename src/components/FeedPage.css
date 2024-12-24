@@ -1,71 +1,271 @@
 .feed-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .post {
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-  }
-  
-  .share-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.post {
+  width: 328px;
+  height: auto;
+  top: 0px;
+  left: 20px;
+  gap: 30px;
+  opacity: 0px;
+  background: #F7EBFF;  
+  border-radius: 26px;  
+  position:relative;
+}
+
+.share-button {
+  width: 92px;
+  height: 30px;
+  top: 0px;
+  left: 0px;
+  padding: 7px 26px 7px 26px;
+  border-radius: 30px;
+  opacity: 0px;
+  position: relative;
+  background: #D3D3D3;
+}
+
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  left: -145px;
+  top: 16px;
+  position: relative;
+}
+
+.user-name {
+  top: -70px;
+  left: -50px;
+  position: relative;
+}
+
+.user-name span {
+  color: #B0B0B0;
+}
+
+.user-name h2 {
+  color: #000000;
+  font-family: Kumbh Sans, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 19.84px;
+  text-decoration-skip-ink: none;
+}
+
+.feeds {
+  font-family: Karla, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 28.06px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.user-profile-image {
+  width: 40px;
+  height: 40px;
+  top: -10px;
+  left: -120px;
+  gap: 0px;
+  opacity: 0px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.post-user-name {
+  font-family: Karla, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 18.7px;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  left: -100px;
+  top: -30px;
+  position: relative;
+}
+
+.timeAgo {
+  width: 55px;
+  height: 12px;
+  top: -30px;
+  left: -90px;
+  position: relative;
+  gap: 0px;
+  opacity: 0.4;
+  color: #B0B0B0;
+  font-family: Kumbh Sans, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12.4px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.post-text {
+  font-family: Kumbh Sans, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.88px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  width: 304px;
+  height: 45px;
+  top: 66px;
+  left: -140px;
+  position: relative;
+}
+
+.post-image {
+  width: 100px;
+  height: auto;
+  top: 10px;
+  left: 0px;
+  gap: 0px;
+  border-radius: 12px 0px 0px 0px;
+  position: relative;
+}
+
+.like-button {
+  font-family: Kumbh Sans, sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 14.88px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #D95B7F;
+  left: 30px;
+  position: relative;
+}
+
+.share-icon {
+  width: 92px;
+  height: 30px;
+  top: -35px;
+  left: 120px;
+  padding: 7px 26px 7px 26px;
+  position: relative;
+}
+
+.share-div span {
+  font-family:Kumbh Sans, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 25.72px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color:#A9A9A9;
+}
+
+.share-div {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 328px;
+  height: 379px;
+  top: 180px;
+  left: 30px;
+  gap: 0px;
+  opacity: 0px;
+  position: relative;
+}
+
+/* Media Query for Desktop View */
+@media (min-width: 768px) {
   .share-div {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-  }
-  
-  .social-icons img {
-    width: 30px;
-    height: 30px;
-    margin: 5px;
-    cursor: pointer;
-  }
-  
-  button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .profile-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    cursor: pointer;
+      left: 50%; /* Center the share div */
+      transform: translateX(-50%); /* Adjust to center it horizontally */
   }
 
-  .save-button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
+  .post {
+      margin-left: auto;
+      margin-right: auto;
   }
-  
-  .profile-image-preview {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-  }
+}
+
+
+.social-icons {
+  top:70px;
+  position:relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon-circle {
+  width: 56px; /* Adjust size of the circular container */
+  height: 56px;
+  background-color:#E9F6FB; /* Set background color for the circular container */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  margin-bottom: 8px; /* Space between icon and label */
+}
+
+.icon-circle img {
+  width: 30px; /* Adjust size of the icons */
+  height: 30px;
+}
+
+.icon-label {
+  font-size: 14px; /* Font size for the label */
+  color: #333; /* Text color for the label */
+  text-align: center;
+}
+
+.copyboard{
+  width: 288px;
+height: 43px;
+top: 120px;
+left:20px;
+gap: 0px;
+border-radius: 8px;
+opacity: 0.3px;
+position:relative;
+background:#D9D9D9;
+align-items:center;
+}
+
+.circular-model {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 0px;
+  left:300px;
+  border-radius: 50%; /* Makes the container circular */
+  background-color: #000000; /* Background color */
+  border: 1px solid transparent; /* Border */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  zIndex:2000;
+}
+
+.circular-model img {
+  width: 30px; /* Adjust the size of the image inside */
+  height: 30px;
+}

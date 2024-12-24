@@ -6,6 +6,7 @@ import FeedPage from './components/FeedPage.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 import EditProfilePage from './components/EditProfilePage.jsx';
 import CreatePost from './components/CreatePost.jsx';
+import PostPage from './components/PostPage.jsx';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/createpost" element={<CreatePost/>}/>
+        <Route path="/post/:postId/:userId" element={<PostPage />} />
       </Routes>
     </Router>
   );

@@ -193,3 +193,25 @@
   padding: 5px;
   border-radius: 5px;
 }
+
+.circular-model {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 0px;
+  left:300px;
+  border-radius: 50%; /* Makes the container circular */
+  background-color: #000000; /* Background color */
+  border: 1px solid transparent; /* Border */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  zIndex:2000;
+}
+
+.circular-model img {
+  width: 30px; /* Adjust the size of the image inside */
+  height: 30px;
+}
+
