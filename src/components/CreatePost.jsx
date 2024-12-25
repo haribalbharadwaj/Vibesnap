@@ -3,6 +3,14 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore'; // Firest
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Firebase storage functions
 import { auth } from "../../firebaseConfig.js"; // Firebase auth
 import './CreatePost.css';
+import { useNavigate } from 'react-router-dom';
+import Back from '../assets/back.png';
+import Choose from '../assets/camera.png';
+import Camera from '../assets/camera.png';
+import Photo from '../assets/photos.png';
+import Videos from '../assets/videos.png';
+import Create from '../assets/create.png';
+
 
 const CreatePost = () => {
   const [postText, setPostText] = useState('');
@@ -10,6 +18,7 @@ const CreatePost = () => {
   const [selectedTab, setSelectedTab] = useState('photos'); // 'photos' or 'videos'
   const db = getFirestore();
   const storage = getStorage();  // Firebase storage
+  const navigate = useNavigate();
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -77,6 +86,10 @@ const CreatePost = () => {
 
   return (
     <div className="create-post-container">
+
+      <img src={Back} className="back-button" onClick={() => navigate(-1)}/>
+
+      <span className='new-post'>New post</span>
       {/* Input for post text */}
       <textarea
         className="post-textarea"
@@ -89,6 +102,7 @@ const CreatePost = () => {
       <div className="file-options">
         {/* Desktop view: Choose files and Camera */}
         <label htmlFor="file-upload" className="desktop-file-chooser">
+          <img src={Choose} alt="Choose Files" className="icon" />
           Choose Files
         </label>
         <input
@@ -99,12 +113,13 @@ const CreatePost = () => {
           onChange={handleFileChange}
           style={{ display: 'none' }}
         />
-        <button
+        <span
           className="desktop-camera"
           onClick={() => document.getElementById('camera-upload').click()}
         >
+           <img src={Camera} alt="Camera" className="icon" />
           Camera
-        </button>
+        </span>
 
         {/* Hidden input for capturing from camera */}
         <input
@@ -118,12 +133,20 @@ const CreatePost = () => {
 
         {/* Mobile view: Separate options for Photos, Videos, and Camera */}
         <div className="mobile-buttons">
-          <button onClick={() => triggerFileInput('photos')}>Photos</button>
-          <button onClick={() => triggerFileInput('videos')}>Videos</button>
-          <button onClick={() => document.getElementById('camera-upload').click()}>
+          <span  onClick={() => triggerFileInput('photos')}>
+            <img src={Photo} alt="Photos" className="icon" />
+            Photos
+          </span>
+          <span onClick={() => triggerFileInput('videos')}>
+            <img src={Videos} alt="Videos" className="icon" />
+            Videos
+          </span>
+          <span onClick={() => document.getElementById('camera-upload').click()}>
+            <img src={Camera} alt="Camera" className="icon" />
             Camera
-          </button>
+          </span>
         </div>
+
       </div>
 
       {/* Display selected files with previews for images */}
@@ -145,9 +168,9 @@ const CreatePost = () => {
       </div>
 
       {/* Submit button */}
-      <button className="create-post-button" onClick={handleSubmitPost}>
+      <img className="create-post-button" src={Create} onClick={handleSubmitPost}
         Create Post
-      </button>
+      />
     </div>
   );
 };

@@ -1,5 +1,7 @@
 .create-post-container {
   width: 100%;
+  height:900px;
+  max-height:100%;
   max-width: 600px;
   margin: auto;
   padding: 20px;
@@ -8,17 +10,30 @@
 }
 
 .post-textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  font-size: 16px;
+  width: 385px;
+  height: 248px;
+  top: 64px;
+  left: 12px;
+  border-radius: 10px;
+  position: relative;
+  background: #D9D9D99C;
+  padding: 10px; /* Add padding to move the text from the border */
+  box-sizing: border-box; /* Ensure padding doesn't affect overall width/height */
+  resize: none; /* Prevent resizing if needed */
+  font-family: inherit; /* Keep the same font as the rest of the app */
+  font-size: 14px;
+  line-height: 1.5; /* Adjust line-height for text spacing */
+  color: black;
+  overflow-y: auto;
+  vertical-align: top; /* Ensure text starts from the top */
 }
 
 .file-options {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  top:100px;
+  position:relative;
 }
 
 .desktop-file-chooser {
@@ -31,17 +46,27 @@
 
 .mobile-buttons {
   display: flex;
+  flex-direction:column;
   justify-content: space-around;
   gap: 10px;
+  top:100px;
+  left:20px;
+  position:relative;
 }
 
-.mobile-buttons button {
-  padding: 10px;
+.label{
+  width:110px;
+  height:17px;
+  font-family: Kumbh Sans,sans-serif;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f0f0f0;
+  font-weight: 700;
+  line-height: 17.36px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }
+
+
 
 .selected-files {
   margin-top: 20px;
@@ -57,10 +82,11 @@
 }
 
 .create-post-button {
+  top:400px;
+  left:30px;
+  position:relative;
   margin-top: 20px;
   padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -72,36 +98,47 @@
   .desktop-file-chooser {
     display: block;
     padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     cursor: pointer;
   }
 
   .desktop-camera {
     display: block;
     padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     cursor: pointer;
   }
 
   .mobile-buttons {
     display: none;
   }
+
+  .create-post-button{
+    left:100px;
+    position:relative;
+  }
 }
 
 /* Media preview */
 .file-preview img, .file-preview video {
-  max-width: 100%; /* Ensure the media is responsive */
-  height: auto;    /* Maintain the aspect ratio */
-  object-fit: cover; /* Cover the container and crop if necessary */
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
   border-radius: 5px;
-  max-height: 300px; /* Set a max height to prevent very large previews */
+  max-height: 300px;
 }
 
-.file-preview video {
-  max-width: 100%;  /* Ensure video doesn't overflow */
-  height: auto;     /* Maintain aspect ratio */
+.back-button {
+  left: 20px;
+  top: 30px;
+  position: relative;
+  cursor: pointer;
+}
+
+.new-post {
+  font-family: Karla, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 23.38px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: auto;
 }

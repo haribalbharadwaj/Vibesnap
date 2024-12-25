@@ -6,6 +6,9 @@ import DefaultProfile from '../assets/default.png';
 import '../components/ProfilePage.css'; 
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import Plus from'../assets/plus.png';
+import { onAuthStateChanged } from 'firebase/auth';
+import Background from '../assets/background.jpg';
+import Back from '../assets/wback.png';
 
 const ProfilePage = () => {
   const storage = getStorage();
@@ -15,10 +18,11 @@ const ProfilePage = () => {
     photoURL: DefaultProfile,
   });
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   const navigate = useNavigate();
   const db = getFirestore();
 
-  const fetchUserData = async () => {
+ /* const fetchUserData = async () => {
     try {
       const user = auth.currentUser;
       if (user) {
@@ -37,8 +41,29 @@ const ProfilePage = () => {
       console.error('Error fetching user data:', error);
     }
   };
+  */
+  
+  const fetchUserData = async (user) => {
+    try {
+      if (user) {
+        const docRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setUserData({
+            name: data.name || 'New User',
+            bio: data.bio || 'This is your bio',
+            photoURL: data.photoURL || DefaultProfile,
+            backgroundURL: data.backgroundURL || Background
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
-  const fetchPosts = async () => {
+ /* const fetchPosts = async () => {
     try {
       const user = auth.currentUser;
       if (user) {
@@ -72,11 +97,55 @@ const ProfilePage = () => {
       console.error('Error fetching posts:', error);
     }
   };
+*/
 
-  useEffect(() => {
-    fetchUserData();
-    fetchPosts();
-  }, []);
+const fetchPosts = async (user) => {
+  try {
+    if (user) {
+      const postsQuery = query(
+        collection(db, 'posts'),
+        where('userId', '==', user.uid)
+      );
+      const querySnapshot = await getDocs(postsQuery);
+
+      const postData = await Promise.all(
+        querySnapshot.docs.map(async (doc) => {
+          const post = doc.data();
+          const files = post.files || [];
+          const postFiles = await Promise.all(
+            files.map(async (filePath) => {
+              const url = await getDownloadURL(ref(storage, filePath));
+              return url;
+            })
+          );
+
+          return {
+            ...post,
+            postFiles,
+          };
+        })
+      );
+
+      setPosts(postData);
+    }
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+  }
+};
+
+
+  
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      fetchUserData(user);
+      fetchPosts(user);
+    }
+    setLoading(false); // Set loading to false after data is fetched
+  });
+
+  return () => unsubscribe(); // Clean up the listener on component unmount
+}, []);
 
   const handleEditProfile = () => {
     navigate('/edit-profile');
@@ -113,7 +182,15 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      <h1>Profile Page</h1>
+
+      <img src={Back}  style={{left:'-180px',top:'30px',position:'relative',zIndex:'2000'}}onClick={() => navigate(-1)}/>
+
+      <div className='hello'>
+       <img
+       src={userData.backgroundURL || '/assets/background.png'}
+       alt="Profile"
+     />
+      </div>
 
       <div className="profile-image-section">
         <img

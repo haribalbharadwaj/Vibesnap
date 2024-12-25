@@ -27,8 +27,19 @@ const FeedPage = () => {
   const db = getFirestore();
   const [userId, setUserId] = useState(auth.currentUser?.uid); // Track the logged-in user ID
 
+
+  useEffect(() => {
+    console.log("Auth currentUser:", auth.currentUser); // Check if auth.currentUser is defined
+    if (!userId && auth.currentUser) {
+      setUserId(auth.currentUser.uid);
+      console.log("User ID set:", auth.currentUser.uid); // Log when userId is set
+    } else {
+      console.log("User is not authenticated or userId is already set.");
+    }
+  }, [userId]);
+  
   // Fetch the user's profile data from Firebase
-  const fetchUserData = async () => {
+ /* const fetchUserData = async (uid) => {
     try {
       const user = auth.currentUser;  // Get current authenticated user
       if (user) {
@@ -45,7 +56,40 @@ const FeedPage = () => {
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
+  };*/
+
+  const fetchUserData = async (uid) => {
+    try {
+      const docRef = doc(db, 'users', uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setUserData(data);
+        localStorage.setItem('userData', JSON.stringify(data));  // Store user data in localStorage
+      } else {
+        console.log('No such document!');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        console.log("Auth state changed: user logged in", user.uid); // Log when a user is logged in
+        setUserId(user.uid);
+        fetchUserData(user.uid);
+      } else {
+        console.log("Auth state changed: no user logged in");
+      }
+    });
+    
+    return () => {
+      unsubscribe(); // Cleanup subscription on component unmount
+    };
+  }, []);
+  
 
   // Fetch all posts from Firestore
 
@@ -104,9 +148,9 @@ const fetchPosts = async () => {
   const handleLikeClick = async (postId, currentLikes, likedBy = []) => {
     try {
       const postRef = doc(db, 'posts', postId);  // Reference to the specific post document
-  
-      // Check if the current user has already liked the post
-      if (likedBy.includes(userId)) {
+    
+      // Ensure likedBy is an array before checking
+      if (Array.isArray(likedBy) && likedBy.includes(userId)) {
         // If user has already liked, decrement the like count
         await updateDoc(postRef, {
           likes: currentLikes - 1,
@@ -123,13 +167,13 @@ const fetchPosts = async () => {
         // If user hasn't liked, increment the like count
         await updateDoc(postRef, {
           likes: currentLikes + 1,
-          likedBy: [...likedBy, userId],  // Always ensure likedBy is an array
+          likedBy: [...(Array.isArray(likedBy) ? likedBy : []), userId],  // Ensure likedBy is an array
         });
         
         // Update local state to reflect the new like count
         setPosts(prevPosts => 
           prevPosts.map(post => 
-            post.id === postId ? { ...post, likes: currentLikes + 1, likedBy: [...likedBy, userId] } : post
+            post.id === postId ? { ...post, likes: currentLikes + 1, likedBy: [...(Array.isArray(likedBy) ? likedBy : []), userId] } : post
           )
         );
       }
@@ -137,11 +181,15 @@ const fetchPosts = async () => {
       console.error('Error liking post:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchUserData();  // Fetch user data on component load
     fetchPosts();     // Fetch all posts on component load
   }, []);
+
+
+  
 
   const handleCreatePostClick = () => {
     navigate('/createpost'); // Navigate to the CreatePost page
@@ -211,22 +259,28 @@ const fetchPosts = async () => {
       }
     });
   };
+  const handleProfileClick = () => {
+    navigate(`/profile/${userId}`);  // Navigate to profile page with userId
+  };
 
   return (
     <div className="feed-container">
       {/* Profile Image */}
-      <div className="profile-section">
+     <div>
+     <div className="profile-section">
+     {console.log('userId', userId)}
         <img 
           src={userData.photoURL || '/assets/default.png'}  // Use fetched profile image or default
           alt="Profile"
           className="profile-image"
-          onClick={() => navigate('/profile')}
+          onClick={handleProfileClick}
         />
         <div className="user-name">
           <span>Welcome back</span>
           <h2>{userData.name}</h2> 
         </div>
       </div>
+     </div>
 
       <h1 className="feeds">Feeds</h1>
 

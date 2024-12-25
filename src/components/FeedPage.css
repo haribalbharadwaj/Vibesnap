@@ -30,21 +30,24 @@
 }
 
 
-.profile-image {
+.profile-section img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
-  left: -145px;
+  position: absolute; /* Fix typo */
+  left: 100px;
   top: 16px;
-  position: relative;
+  z-index: 2000; /* Bring the image to the front */
 }
 
 .user-name {
-  top: -70px;
-  left: -50px;
+  top: -40px;
+  left: 200px;
   position: relative;
+  z-index: 1000; /* Ensure this is lower than the image */
 }
+
 
 .user-name span {
   color: #B0B0B0;
@@ -67,13 +70,16 @@
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+  left:50px;
+  top:-10px;
+  position:relative;
 }
 
 .user-profile-image {
   width: 40px;
   height: 40px;
-  top: -10px;
-  left: -120px;
+  top: 10px;
+  left: -80px;
   gap: 0px;
   opacity: 0px;
   border-radius: 50%;
@@ -87,16 +93,16 @@
   line-height: 18.7px;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
-  left: -100px;
-  top: -30px;
+  left: -75px;
+  top: -10px;
   position: relative;
 }
 
 .timeAgo {
   width: 55px;
   height: 12px;
-  top: -30px;
-  left: -90px;
+  top: -10px;
+  left: -70px;
   position: relative;
   gap: 0px;
   opacity: 0.4;
@@ -121,7 +127,7 @@
   width: 304px;
   height: 45px;
   top: 66px;
-  left: -140px;
+  left: -120px;
   position: relative;
 }
 
@@ -193,6 +199,12 @@
   .post {
       margin-left: auto;
       margin-right: auto;
+  }
+
+  .feeds{
+    left:280px;
+    top:-10px;
+    position:relative;
   }
 }
 
@@ -268,4 +280,20 @@ align-items:center;
 .circular-model img {
   width: 30px; /* Adjust the size of the image inside */
   height: 30px;
+}
+
+
+/* Extra small devices (phones, less than 600px) */
+@media (max-width: 600px) {
+  .user-name{
+    left:-60px;
+    top:-60px;
+    position:relative;
+  }
+  
+  .profile-section img{
+    left:-160px;
+    top:0px;
+    position:relative;
+  }
 }

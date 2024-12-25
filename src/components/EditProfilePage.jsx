@@ -9,8 +9,10 @@ const db = getFirestore();
 const storage = getStorage();
 
 const EditProfilePage = () => {
-  const [backgroundImage, setBackgroundImage] = useState(null);
-  const [profileImage, setProfileImage] = useState(null);
+  const [backgroundImage, setBackgroundImage] = useState(null); // For preview
+  const [backgroundImageFile, setBackgroundImageFile] = useState(null); // Actual file to upload
+  const [profileImage, setProfileImage] = useState(null); // For preview
+  const [profileImageFile, setProfileImageFile] = useState(null); // Actual file to upload
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
 
@@ -41,14 +43,7 @@ const EditProfilePage = () => {
     const file = e.target.files[0];
     if (file) {
       setBackgroundImage(URL.createObjectURL(file)); // Show preview
-      uploadImageToStorage(file, `backgroundImages/${auth.currentUser.uid}`)
-        .then((url) => {
-          console.log('Background image URL:', url);
-          setBackgroundImage(url); // Update with Firebase URL
-        })
-        .catch((error) => {
-          console.error("Error uploading background image:", error);
-        });
+      setBackgroundImageFile(file); // Store actual file to upload later
     }
   };
 
@@ -56,14 +51,7 @@ const EditProfilePage = () => {
     const file = e.target.files[0];
     if (file) {
       setProfileImage(URL.createObjectURL(file)); // Show preview
-      uploadImageToStorage(file, `profileImages/${auth.currentUser.uid}`)
-        .then((url) => {
-          console.log('Profile image URL:', url);
-          setProfileImage(url); // Update with Firebase URL
-        })
-        .catch((error) => {
-          console.error("Error uploading profile image:", error);
-        });
+      setProfileImageFile(file); // Store actual file to upload later
     }
   };
 
@@ -71,7 +59,7 @@ const EditProfilePage = () => {
     try {
       const storageRef = ref(storage, path);
       const uploadTask = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(uploadTask.ref); // Ensure this URL is fetched correctly
+      const downloadURL = await getDownloadURL(uploadTask.ref); // Get the Firebase URL
       return downloadURL;
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -86,18 +74,17 @@ const EditProfilePage = () => {
         let backgroundImageUrl = backgroundImage;
 
         // Upload profile and background images if they are files
-        if (profileImage && profileImage instanceof File) {
-          profileImageUrl = await uploadImageToStorage(profileImage, `profileImages/${user.uid}`);
+        if (profileImageFile) {
+          profileImageUrl = await uploadImageToStorage(profileImageFile, `profileImages/${user.uid}`);
         }
-        if (backgroundImage && backgroundImage instanceof File) {
-          backgroundImageUrl = await uploadImageToStorage(backgroundImage, `backgroundImages/${user.uid}`);
+        if (backgroundImageFile) {
+          backgroundImageUrl = await uploadImageToStorage(backgroundImageFile, `backgroundImages/${user.uid}`);
         }
 
         // Update profile in Firebase Authentication
         await updateProfile(user, {
           displayName: name,
           photoURL: profileImageUrl,
-          backgroundURL:backgroundImageUrl  // Permanent URL
         });
 
         // Save to Firestore

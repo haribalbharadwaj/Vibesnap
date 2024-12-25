@@ -20,6 +20,8 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #7EA6FF;
+  left:20px;
+  position:relative;
 }
 
 /* Profile Details Section */
@@ -213,5 +215,51 @@
 .circular-model img {
   width: 30px; /* Adjust the size of the image inside */
   height: 30px;
+}
+
+.back-button {
+  left: 0px;
+  top: 30px;
+  position: absolute;
+  cursor: pointer;
+  z-Index:2000;
+}
+
+
+
+.hello {
+  position: relative; /* Ensure container is positioned correctly */
+  width: 25%;
+  height: 162px; /* Set the height */
+  overflow: hidden; /* Hide any overflow if image goes beyond container */
+}
+
+/* General background styling */
+.hello img{
+  position: absolute;
+  top: 0;
+  left: 0; /* Default for larger screens */
+  right: 0;
+  width: 100%;
+  height: 162px; /* Ensure the height is set */
+  object-fit: cover; /* Ensure image scales properly without distortion */
+  box-sizing: border-box; 
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+  .hello {
+    left: 0; /* No left margin for mobile devices */
+    width:100%;
+  }
+}
+
+/* Desktop specific styles */
+@media (min-width: 1024px) {
+  .hello {
+    left: 28px; /* Adjust left margin for desktop */
+  }
+
+  
 }
 
