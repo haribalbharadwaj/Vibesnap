@@ -9,6 +9,8 @@ import Plus from'../assets/plus.png';
 import { onAuthStateChanged } from 'firebase/auth';
 import Background from '../assets/background.jpg';
 import Back from '../assets/wback.png';
+import Editprofile from '../assets/editprofile.png';
+import Like from '../assets/heart.png';
 
 const ProfilePage = () => {
   const storage = getStorage();
@@ -111,6 +113,9 @@ const fetchPosts = async (user) => {
       const postData = await Promise.all(
         querySnapshot.docs.map(async (doc) => {
           const post = doc.data();
+         
+          console.log(post.likes);  // Check if likeCount exists
+
           const files = post.files || [];
           const postFiles = await Promise.all(
             files.map(async (filePath) => {
@@ -122,6 +127,7 @@ const fetchPosts = async (user) => {
           return {
             ...post,
             postFiles,
+            likes: post.likes || 0,
           };
         })
       );
@@ -205,9 +211,7 @@ useEffect(() => {
         <p>{userData.bio}</p>
       </div>
 
-      <button className="edit-profile-button" onClick={handleEditProfile}>
-        Edit Profile
-      </button>
+      <img className="edit-profile-button" src={Editprofile} onClick={handleEditProfile}/>
 
       <div className="my-posts-section">
         <h2>My Posts</h2>
@@ -215,12 +219,11 @@ useEffect(() => {
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={index} className="post">
-                {post.text && <p>{post.text}</p>}
                 {post.postFiles.length > 0 && (
                   <div className="post-image-container">
                     {/* Display only the first image/video */}
                     {isImage(post.postFiles[0]) ? (
-                      <img src={post.postFiles[0]} alt={`Post Image`} className="post-image" />
+                      <img src={post.postFiles[0]} alt={`Post Image`} className="post-container-image" />
                     ) : isVideo(post.postFiles[0]) ? (
                       <video controls className="post-video">
                         <source src={post.postFiles[0]} />
@@ -228,6 +231,21 @@ useEffect(() => {
                     ) : (
                       <p>Unsupported file format: {getFileExtension(post.postFiles[0])}</p>
                     )}
+
+{post.postFiles.length > 1 && (
+                <div className="media-counter">
+                  {`1/${post.postFiles.length}`} {/* Always show the first one */}
+                </div>
+              )}
+
+              {/* Display likes count */}
+
+                          <div className="like-count">
+                            <img src={Like}/>
+                            <span > {post.likes || 0}</span>
+                          </div>
+              
+                         
                     {/* Text overlay */}
                     <div className="text-overlay">{post.text}</div>
                   </div>

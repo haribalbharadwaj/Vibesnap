@@ -36,8 +36,8 @@
   border-radius: 50%;
   cursor: pointer;
   position: absolute; /* Fix typo */
-  left: 100px;
-  top: 16px;
+  left: 280px;
+  top: -10px;
   z-index: 2000; /* Bring the image to the front */
 }
 
@@ -106,9 +106,9 @@
   position: relative;
   gap: 0px;
   opacity: 0.4;
-  color: #B0B0B0;
+  color: #505050;
   font-family: Kumbh Sans, sans-serif;
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 12.4px;
   text-align: left;
@@ -297,3 +297,4 @@ align-items:center;
     position:relative;
   }
 }
+
