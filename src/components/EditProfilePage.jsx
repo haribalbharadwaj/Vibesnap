@@ -4,6 +4,7 @@ import { auth } from "../../firebaseConfig.js";
 import { updateProfile } from "firebase/auth"; 
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import Edit from '../assets/editor.png';
 
 const db = getFirestore();
 const storage = getStorage();
@@ -111,7 +112,30 @@ const EditProfilePage = () => {
           alt="Background Preview"
           className="background-preview"
         />
-        <label htmlFor="background-upload" className="edit-background-btn">Edit Background</label>
+        <div 
+    className="edit-background-circle" 
+    onClick={() => document.getElementById('background-upload').click()}
+    style={{
+      width: '27px',
+      height: '27px',
+      borderRadius: '50%',
+      backgroundColor: 'white',
+      position: 'absolute',
+      top: '150px',
+      left: '330px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      cursor: 'pointer',
+      opacity: 1 // Change opacity to 1 to make it visible
+    }}
+  >
+    <img 
+      src={Edit}
+      alt="Edit" 
+      style={{ width: '15px', height: '15px' }} 
+    />
+  </div>
         <input 
           type="file" 
           id="background-upload" 

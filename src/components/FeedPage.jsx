@@ -14,9 +14,14 @@ import Messenger from '../assets/messenger.png';
 import Telegram from '../assets/telegram.png';
 import Instagram from '../assets/instagram.png';
 import Plus from'../assets/plus.png';
+import {ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Copy from '../assets/copy.png';
+import Close from '../assets/close.png';
 
 const FeedPage = () => {
-  const [showShare, setShowShare] = useState(false);
+  const [showShare, setShowShare] = useState({});
+  const [currentPostId, setCurrentPostId] = useState(null);
   const [userData, setUserData] = useState({
     name: '',
     bio: '',
@@ -26,6 +31,7 @@ const FeedPage = () => {
   const navigate = useNavigate();
   const db = getFirestore();
   const [userId, setUserId] = useState(auth.currentUser?.uid); // Track the logged-in user ID
+  const [copiedLink, setCopiedLink] = useState('');
 
 
   useEffect(() => {
@@ -195,18 +201,46 @@ const fetchPosts = async () => {
     navigate('/createpost'); // Navigate to the CreatePost page
   };
 
-  const toggleShareDiv = () => {
-    setShowShare(!showShare);
+  const toggleShareDiv = (postId) => {
+    setShowShare(prevState => ({
+      ...prevState,
+      [postId]: !prevState[postId],  // Toggle the visibility for the specific post
+    }));
+  };
+  
+
+  // Handle the share button click
+  const handleShareClick = (postId) => {
+    setCurrentPostId(postId);
+    const postUrl = `${window.location.origin}/post/${postId}`;  // Generate the post URL
+    setCopiedLink(postUrl);  // Set the copied link immediately
+    toggleShareDiv(postId);
+  };
+  
+
+  const handleCloseShareDiv=()=>{
+    setShowShare(false);
+  }
+
+
+  // Modify the function to copy the link for a specific post
+  const copyPostLink = () => {
+    if (currentPostId) {
+      const postUrl = `${window.location.origin}/post/${currentPostId}`;
+      navigator.clipboard.writeText(postUrl).then(() => {
+        setCopiedLink(postUrl);
+        toast.success('Link copied to clipboard!');
+        console.log("Link copied to clipboard:", postUrl);
+      }).catch((err) => {
+        console.error("Error copying link:", err);
+        toast.error('Failed to copy the link.');
+      });
+    }
   };
 
-  const copyFeedLink = () => {
-    const feedUrl = `${window.location.origin}/feed`;
-    navigator.clipboard.writeText(feedUrl);
-    alert('Feed page link copied to clipboard!');
-  };
 
   const shareFeedLink = (platform) => {
-    const feedUrl = `${window.location.origin}/feed`;
+    const feedUrl = `${window.location.origin}/post/${currentPostId}`;
     let shareUrl = '';
 
     switch (platform) {
@@ -242,23 +276,27 @@ const fetchPosts = async () => {
   };
 
   const renderMedia = (files) => {
-    return files.map((file, index) => {
-      const fileExtension = file.split('.').pop();  // Get the file extension
-
-      if (fileExtension === 'mp4') {
-        // Render video
-        return (
-          <video key={index} controls className="post-video">
-            <source src={file} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        );
-      } else {
-        // Render image
-        return <img key={index} src={file} alt="Post Media" className="post-image" />;
-      }
-    });
+    return (
+      <div className="post-media-container">
+        {files.map((file, index) => {
+          const fileExtension = file.split('.').pop();
+  
+          if (fileExtension === 'mp4') {
+            return (
+              <video key={index} controls className="post-video">
+                <source src={file} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            );
+          } else {
+            return <img key={index} src={file} alt="Post Media" className="post-image" />;
+          }
+        })}
+      </div>
+    );
   };
+
+  
   const handleProfileClick = () => {
     navigate(`/profile/${userId}`);  // Navigate to profile page with userId
   };
@@ -284,91 +322,84 @@ const fetchPosts = async () => {
 
       <h1 className="feeds">Feeds</h1>
 
+      <div>
+
       {posts.length > 0 ? (
         posts.map((post, index) => (
-          <div key={index} className="post">
-            {post.text && <span className='post-text'>{post.text}</span>}  {/* Display post text if available */}
-            
-            <div className="post-user-info">
-        <img 
-          src={post.userData?.photoURL || '/assets/default.png'}  // Use the user's photoURL or a default image
-          alt="User Profile"
-          className="user-profile-image"
-        /><span className='post-user-name'>{post.userData ? post.userData.name : 'Unknown User'}</span>
-        </div>
-        <span className='timeAgo'>{calculateTimeAgo(post.createdAt)}</span>  {/* Display time ago */}
-
-
-            {post.files && renderMedia(post.files)}  {/* Display images or videos if available */}
-
-            {/* Like Button */}
-            <div className="like-button">
-              <img src={Like}
-                onClick={() => handleLikeClick(post.id, post.likes || 0, post.likedBy || [])}
-              />
-              <span > {post.likes || 0}</span>
-            </div>
-
-           
+          <div key={post.id} className="post">
+            {post.text && <span className='posts-text'>{post.text}</span>}  {/* Display post text if available */}
+              <div className="post-user-info">
+                <img 
+                  src={post.userData?.photoURL || '/assets/default.png'}  // Use the user's photoURL or a default image
+                  alt="User Profile"
+                  className="user-profile-image"
+                />
+                <span className='post-user-name'>{post.userData ? post.userData.name : 'Unknown User'}</span>
+              </div>
+              <span className='timeAgo'>{calculateTimeAgo(post.createdAt)}</span>  {/* Display time ago */}
+              
+              {post.files && renderMedia(post.files)}  {/* Display images or videos if available */}
+              
+              {/* Like Button */}
+              <div className="like-button">
+                <img src={Like}
+                  onClick={() => handleLikeClick(post.id, post.likes || 0, post.likedBy || [])}
+                />
+                <span > {post.likes || 0}</span>
+              </div>
               <img 
                 style={{width:'92px',height:'30px'}}
                 src={Share}  // Replace with your image path
                 alt="Share Icon" 
                 className="share-icon"  // Optionally, add a class for styling
-                onClick={toggleShareDiv}
+                onClick={() => handleShareClick(post.id)}
               />
-           
-
-          
-            {/* Share div */}
-            {showShare && (
-
-              <div style={{ width: '100vw', position: 'fixed', top: '0', left: '0', height: '200vh', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                <div className="share-div" >
-                  <span style={{fontFamily:'Karla,sans-serif',fontSize:'22px',fontWeight:'800',lineHeight: '25.72px',
-                    color:'#000000',left:'20px',position:'absolute'
-                  }}> Share post</span>
-                  <button
-        style={{
-          position: 'absolute',
-          top: '20px',
-          right: '20px',
-          backgroundColor: 'transparent',
-          border: 'none',
-          fontSize: '30px',
-          cursor: 'pointer',
-          zIndex:'2000',
-          color:'#A8A8A8'
-        }}
-        onClick={toggleShareDiv}
-      >
-        X
-      </button>
-                  <div className="social-icons" style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
-
-
-                  <div style={{display:'flex',flexDirection:'row',gap:'20px'}}>
+              
+              {/* Share div */}
+              {showShare[post.id] && (
+                <div style={{ width: '100vw', position: 'fixed', top: '0', left: '0', height: '200vh', backgroundColor: 'rgba(0, 0, 0, 0.5)',zIndex:'2000' }}>
+                  <div className="share-div" >
+                    <span style={{fontFamily:'Karla,sans-serif',fontSize:'22px',fontWeight:'800',lineHeight: '25.72px',
+                      color:'#000000',left:'20px',position:'absolute'
+                    }}> Share post</span>
+                    <img 
+                      style={{
+                        position: 'absolute',
+                        top: '20px',
+                        right: '20px',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        fontSize: '30px',
+                        cursor: 'pointer',
+                        zIndex:'2000',
+                        color:'#A8A8A8'
+                      }}
+                      onClick={handleCloseShareDiv}
+                     src={Close}
+                    />
+                    <div className="social-icons" style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
+                      <div style={{display:'flex',flexDirection:'row',gap:'20px'}}>
                         <div className="social-icon">
                             <div className="icon-circle">
-                              <img src={Twitter} onClick={() => shareFeedLink('twitter')} />
+                              <img src={Twitter} onClick={() => shareFeedLink('twitter',post.id)} />
                             </div>
                             <span className="icon-label">Twitter</span>
                           </div>
                           <div className="social-icon">
                             <div className="icon-circle">
-                              <img src={Facebook} onClick={() => shareFeedLink('facebook')} />
+                              <img src={Facebook} onClick={() => shareFeedLink('facebook', post.id)} />
                             </div>
                             <span className="icon-label">Facebook</span>
                           </div>
                           <div className="social-icon">
                             <div className="icon-circle">
-                              <img src={Whatsapp} onClick={() => shareFeedLink('whatsapp')} />
+                              <img src={Whatsapp} onClick={() => shareFeedLink('whatsapp', post.id)} />
                             </div>
                             <span className="icon-label">WhatsApp</span>
                           </div>
                           <div className="social-icon">
                             <div className="icon-circle">
-                              <img src={Telegram} onClick={() => shareFeedLink('telegram')} />
+                              <img src={Telegram} onClick={() => shareFeedLink('telegram', post.id)} />
                             </div>
                             <span className="icon-label">Telegram</span>
                           </div>
@@ -379,25 +410,25 @@ const fetchPosts = async () => {
 
                       <div className="social-icon">
                         <div className="icon-circle">
-                          <img src={Instagram} onClick={() => shareFeedLink('instagram')} />
+                          <img src={Instagram} onClick={() => shareFeedLink('instagram', post.id)} />
                         </div>
                         <span className="icon-label">Instagram</span>
                       </div>
                       <div className="social-icon">
                         <div className="icon-circle">
-                          <img src={Reddit} onClick={() => shareFeedLink('reddit')} />
+                          <img src={Reddit} onClick={() => shareFeedLink('reddit', post.id)} />
                         </div>
                         <span className="icon-label">Reddit</span>
                       </div>
                       <div className="social-icon">
                         <div className="icon-circle">
-                          <img src={Discord} onClick={() => shareFeedLink('discord')} />
+                          <img src={Discord} onClick={() => shareFeedLink('discord', post.id)} />
                         </div>
                         <span className="icon-label">Discord</span>
                       </div>
                       <div className="social-icon">
                         <div className="icon-circle">
-                          <img src={Messenger} onClick={() => shareFeedLink('messenger')} />
+                          <img src={Messenger} onClick={() => shareFeedLink('messenger', post.id)} />
                         </div>
                         <span className="icon-label">Messenger</span>
                       </div>
@@ -405,11 +436,20 @@ const fetchPosts = async () => {
                     </div>
                       
                   </div>
-
-                  <div className='copyboard'>
-                  <button onClick={copyFeedLink}>Copy Feed Link</button>
+                  <span style={{color:'#000000',fontFamily:'Karla,sans-serif',fontSize:'16px',fontWeight: '600',lineHeight:'18.7px',
+                    left:'-100px',top:'80px',position:'relative'
+                  }}>Page Link</span>
+                  <div className="copyboard" style={{display:'flex',flexDirection:'row',left:'5px',top:'100px',
+                    position:'relative',width:'310px',height:'43px',backgroundColor:'#D9D9D9',}}>
+                    
+                   
+                    {currentPostId === post.id && copiedLink && (
+                      <div className="copied-link-display" style={{color:'#000000'}}>
+                        <span>{copiedLink}</span>
+                      </div>
+                    )}
+                     <img onClick={() => copyPostLink(post.id)} src={Copy}/>
                   </div>
-
               </div>
               </div>
             )}
@@ -419,9 +459,14 @@ const fetchPosts = async () => {
         <p>No posts available</p>
       )}
 
-      <div className="circular-model">
+      </div>
+
+    
+      <div className="circle-model">
         <img src={Plus} alt="Icon inside circular model"  onClick={handleCreatePostClick}/>
       </div>
+
+      <ToastContainer />
 
     </div>
   );

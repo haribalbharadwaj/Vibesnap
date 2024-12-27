@@ -187,81 +187,87 @@ useEffect(() => {
   };
 
   return (
-    <div className="profile-page">
 
-      <img src={Back}  style={{left:'-180px',top:'30px',position:'relative',zIndex:'2000'}}onClick={() => navigate(-1)}/>
+    <div>
 
-      <div className='hello'>
-       <img
-       src={userData.backgroundURL || '/assets/background.png'}
-       alt="Profile"
-     />
-      </div>
+<div className="profile-page">
 
-      <div className="profile-image-section">
-        <img
-          src={userData.photoURL}
-          alt="Profile"
-          className="profile-image"
-        />
-      </div>
+    <div className="back-button" >
+    <img src={Back} onClick={() => navigate(-1)} />
+    </div>
+  <div className='hello'>
+   <img
+   src={userData.backgroundURL || '/assets/background.png'}
+   alt="Profile"
+ />
+  </div>
 
-      <div className="profile-details">
-        <h2>{userData.name}</h2>
-        <p>{userData.bio}</p>
-      </div>
+  <div className="profile-image-section">
+    <img
+      src={userData.photoURL}
+      alt="Profile"
+      className="profile-image"
+    />
+  </div>
 
-      <img className="edit-profile-button" src={Editprofile} onClick={handleEditProfile}/>
+  <div className="profile-details">
+    <h2>{userData.name}</h2>
+    <p>{userData.bio}</p>
+  </div>
 
-      <div className="my-posts-section">
-        <h2>My Posts</h2>
-        <div className="post-images">
-          {posts.length > 0 ? (
-            posts.map((post, index) => (
-              <div key={index} className="post">
-                {post.postFiles.length > 0 && (
-                  <div className="post-image-container">
-                    {/* Display only the first image/video */}
-                    {isImage(post.postFiles[0]) ? (
-                      <img src={post.postFiles[0]} alt={`Post Image`} className="post-container-image" />
-                    ) : isVideo(post.postFiles[0]) ? (
-                      <video controls className="post-video">
-                        <source src={post.postFiles[0]} />
-                      </video>
-                    ) : (
-                      <p>Unsupported file format: {getFileExtension(post.postFiles[0])}</p>
-                    )}
+  <img className="edit-profile-button" src={Editprofile} onClick={handleEditProfile}/>
+
+  <div className="my-posts-section">
+    <h2>My Posts</h2>
+    <div className="post-images">
+      {posts.length > 0 ? (
+        posts.map((post, index) => (
+          <div key={index} className="post">
+            {post.postFiles.length > 0 && (
+              <div className="post-image-container">
+                {/* Display only the first image/video */}
+                {isImage(post.postFiles[0]) ? (
+                  <img src={post.postFiles[0]} alt={`Post Image`} className="post-container-image" />
+                ) : isVideo(post.postFiles[0]) ? (
+                  <video controls className="post-video">
+                    <source src={post.postFiles[0]} />
+                  </video>
+                ) : (
+                  <p>Unsupported file format: {getFileExtension(post.postFiles[0])}</p>
+                )}
 
 {post.postFiles.length > 1 && (
-                <div className="media-counter">
-                  {`1/${post.postFiles.length}`} {/* Always show the first one */}
-                </div>
-              )}
-
-              {/* Display likes count */}
-
-                          <div className="like-count">
-                            <img src={Like}/>
-                            <span > {post.likes || 0}</span>
-                          </div>
-              
-                         
-                    {/* Text overlay */}
-                    <div className="text-overlay">{post.text}</div>
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <p>No posts yet.</p>
-          )}
-        </div>
-      </div>
-
-      <div className="circular-model">
-              <img src={Plus} alt="Icon inside circular model"  onClick={handleCreatePostClick}/>
+            <div className="media-counter">
+              {`1/${post.postFiles.length}`} {/* Always show the first one */}
             </div>
+          )}
+
+          {/* Display likes count */}
+
+                      <div className="like-count">
+                        <img src={Like}/>
+                        <span > {post.likes || 0}</span>
+                      </div>
+          
+                     
+                {/* Text overlay */}
+                <div className="text-overlay">{post.text}</div>
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <p>No posts yet.</p>
+      )}
     </div>
+  </div>
+
+  <div className="circular-model">
+          <img src={Plus} alt="Icon inside circular model"  onClick={handleCreatePostClick}/>
+        </div>
+</div>
+    </div>
+   
   );
 };
 

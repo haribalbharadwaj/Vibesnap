@@ -283,6 +283,7 @@
     left: 0; /* No left margin for mobile devices */
     width:100%;
   }
+  
 }
 
 /* Desktop specific styles */
@@ -370,3 +371,39 @@
   object-fit: cover;
   overflow: hidden;
 }
+
+
+/* Back-button styles for desktop */
+.back-button img {
+  left: -170px;
+  top: 0px;
+  position: relative;
+  cursor: pointer;
+  z-index: 2000;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .back-button img {
+    left: 200px; /* Adjusted positioning for smaller screens */
+    top: 0px; /* Keep the top position consistent */
+    position: relative;
+    width: 24px; /* Adjust the size for mobile */
+    height: auto;
+   /* For visual clarity */
+  }
+}
+
+/* Extra small devices (phones, less than 600px) */
+@media (max-width: 600px) {
+  .back-button img {
+    left: -220px; /* Further adjusted positioning for smaller phones */
+    width: 20px; /* Smaller size for phones */
+    height: auto;
+    position:relative;
+  }
+}
+
+
+
+
