@@ -262,7 +262,7 @@ useEffect(() => {
     </div>
   </div>
 
-  <div className="circular-model">
+  <div className="profile-circular-model">
           <img src={Plus} alt="Icon inside circular model"  onClick={handleCreatePostClick}/>
         </div>
 </div>

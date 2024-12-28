@@ -305,7 +305,7 @@ const fetchPosts = async () => {
     <div className="feed-container">
       {/* Profile Image */}
      <div>
-     <div className="profile-section">
+     <div className="feed-profiles-section">
      {console.log('userId', userId)}
         <img 
           src={userData.photoURL || '/assets/default.png'}  // Use fetched profile image or default

@@ -11,10 +11,10 @@
   max-width: 400px;
 }
 
-.profile-section{
+.edit-profile-section{
   position: relative;
-  left:-380px;
-  top:-70px;
+  left:-110px;
+  top:-110px;
   position:relative;
 }
 
@@ -99,6 +99,37 @@
   border-radius: 20px;
 }
 
+.edit-background-circle {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background-color:white;
+  position: absolute;
+  top: 150px;
+  left: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2000;
+}
+
+.edit-profile-circle{
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background-color:white;
+  position: absolute;
+  top: 10px;
+  left: 95px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2000;
+
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .edit-profile-page {
@@ -115,10 +146,22 @@
     height: 150px;
   }
 
-  .profile-section{
+  .edit-profile-section{
     position: relative;
-    left:80px;
-    top:-125px;
+    left:-120px;
+    top:-150px;
     position:relative;
   }
+
+  .edit-background-circle{
+    position: relative;
+    top:-40px;
+  }
+
+  .edit-profile-circle{
+    position: absolute;
+    top: 10px;
+    left: 75px;
+  }
+  
 }

@@ -226,12 +226,12 @@
   border-radius: 5px;
 }
 
-.circular-model {
+.profile-circular-model {
   width: 50px;
   height: 50px;
   position: relative;
-  top: 0px;
-  left:300px;
+  top: -200px;
+  left:100px;
   border-radius: 50%; /* Makes the container circular */
   background-color: #000000; /* Background color */
   border: 1px solid transparent; /* Border */
@@ -242,7 +242,7 @@
   zIndex:2000;
 }
 
-.circular-model img {
+.profile-circular-model img {
   width: 30px; /* Adjust the size of the image inside */
   height: 30px;
 }

@@ -5,6 +5,9 @@ import { updateProfile } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Edit from '../assets/editor.png';
+import EditProfile from '../assets/Edit Profile.png'
+import Back from '../assets/wback.png';
+import { useNavigate } from 'react-router-dom';
 
 const db = getFirestore();
 const storage = getStorage();
@@ -16,7 +19,7 @@ const EditProfilePage = () => {
   const [profileImageFile, setProfileImageFile] = useState(null); // Actual file to upload
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
-
+   const navigate = useNavigate();
   const fetchUserData = async () => {
     const user = auth.currentUser;
     if (user) {
@@ -107,35 +110,21 @@ const EditProfilePage = () => {
   return (
     <div className="edit-profile-page">
       <div className="background-section">
+        <img src={Back} onClick={() => navigate(-1)} style={{top:'40px',left:'40px',position:'relative'}} />
+        <img src={EditProfile} style={{top:'40px',left:'60px',position:'relative'}}/>
         <img
           src={backgroundImage || '/assets/background.jpg'}
           alt="Background Preview"
           className="background-preview"
         />
-        <div 
-    className="edit-background-circle" 
-    onClick={() => document.getElementById('background-upload').click()}
-    style={{
-      width: '27px',
-      height: '27px',
-      borderRadius: '50%',
-      backgroundColor: 'white',
-      position: 'absolute',
-      top: '150px',
-      left: '330px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      cursor: 'pointer',
-      opacity: 1 // Change opacity to 1 to make it visible
-    }}
-  >
-    <img 
-      src={Edit}
-      alt="Edit" 
-      style={{ width: '15px', height: '15px' }} 
-    />
-  </div>
+        <div className="edit-background-circle" 
+          onClick={() => document.getElementById('background-upload').click()}>
+          <img 
+            src={Edit}
+            alt="Edit" 
+            style={{ width: '15px', height: '15px' }} 
+          />
+        </div>
         <input 
           type="file" 
           id="background-upload" 
@@ -144,13 +133,20 @@ const EditProfilePage = () => {
         />
       </div>
 
-      <div className="profile-section">
+      <div className="edit-profile-section">
         <img
           src={profileImage || '/assets/default.png'}
           alt="Profile Preview"
           className="profile-image-preview"
         />
-        <label htmlFor="profile-upload" className="edit-profile-btn">Edit Profile Image</label>
+        <div className="edit-profile-circle"
+          onClick={() => document.getElementById('profile-upload').click()}>
+          <img 
+            src={Edit}
+            alt="Edit" 
+            style={{ width: '15px', height: '15px' }} 
+          />
+        </div>
         <input 
           type="file" 
           id="profile-upload" 
