@@ -8,6 +8,7 @@ import Edit from '../assets/editor.png';
 import EditProfile from '../assets/Edit Profile.png'
 import Back from '../assets/wback.png';
 import { useNavigate } from 'react-router-dom';
+import Save from '../assets/save.png';
 
 const db = getFirestore();
 const storage = getStorage();
@@ -164,6 +165,8 @@ const EditProfilePage = () => {
           onChange={(e) => setName(e.target.value)}
           className="input-field"
         />
+        <hr/>
+  
 
         <label htmlFor="bio">Bio</label>
         <textarea
@@ -172,8 +175,9 @@ const EditProfilePage = () => {
           onChange={(e) => setBio(e.target.value)}
           className="input-field"
         />
+        <hr/>
 
-        <button className="save-button" onClick={handleSave}>Save Changes</button>
+        <img className="save-button" onClick={handleSave} src={Save}/>
       </div>
     </div>
   );

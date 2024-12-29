@@ -303,6 +303,7 @@ const fetchPosts = async () => {
 
   return (
     <div className="feed-container">
+
       {/* Profile Image */}
      <div>
      <div className="feed-profiles-section">

@@ -61,29 +61,52 @@
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+  top:300px;
+  position:absolute;
+}
+
+.form-section label{
+  font-family: Kumbh Sans,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17.36px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
 }
 
 .input-field {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 0px solid transparent; /* Set the default border to transparent */
   border-radius: 5px;
+  font-family: Kumbh Sans, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17.36px;
+  text-align: left;
+  background-color: #FFFFFF; /* Add a subtle background color */
+  outline: none; /* Remove the default outline */
 }
+
+.input-field:focus {
+  border-color: #007bff; /* Change the border color when the input is focused */
+  background-color: #fff; /* Make the background white when focused */
+}
+
 
 .save-button {
   width: 100%;
   padding: 10px;
-  background-color: #28a745;
-  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  top:200px;
+  position:relative;
 }
 
-.save-button:hover {
-  background-color: #218838;
-}
 
 .background-section {
   position: relative;
@@ -165,3 +188,13 @@
   }
   
 }
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0; /* Adds some spacing around the line */
+  top:-40px;
+  position:relative;
+}
+
